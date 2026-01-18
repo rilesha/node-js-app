@@ -1,20 +1,23 @@
 import mongoose from "mongoose";
 
 const schema = new mongoose.Schema({
-  title: String,
-
-  description: {
+  title: {
     type: String,
-    unique: true,
+    required: true,
+  },
+    description: {
+    type: String,
+    required: true,
   },
   isCompleted:{
     type: Boolean,
     default: false,
   },
   user: {
-    type: mongoose.Schema.Types.ObjectId,
+    type: mongoose.Schema.Types.ObjectId,//user id which is saved in mongoose
     ref: "user",
-  },
+    required: true,
+  },   
   createdAt: {
     type: Date,
     default: Date.now,
