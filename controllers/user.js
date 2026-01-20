@@ -3,7 +3,7 @@ import bcrypt from "bcrypt";
 import { sendCookie } from "../utils/features.js";
 
 
-export const getMyProfile = (req,res)=>{
+export const getMyProfile = async(req,res)=>{
   res.status(200).json({
     success: true,
      user: req.user,
@@ -11,7 +11,7 @@ export const getMyProfile = (req,res)=>{
   }
 
 
-export const login = async(req,res,next)=>{
+export const login = async(req,res)=>{
   const {email,password} = req.body;
   let userExists = await user.findOne({email}).select("+password");//select is used cuz models ma select:false xa
 

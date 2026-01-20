@@ -3,6 +3,7 @@ import router from "./routes/user.js"
 import { connectDb } from "./data/database.js";
 import { config } from "dotenv";
 import cookieParser from "cookie-parser";
+import taskRoute from "./routes/task.js"
 
 const app = express();
 
@@ -11,10 +12,13 @@ config({
 })
 
 connectDb();
-
-app.use(express.json())//For middleware
+//For middleware
+app.use(express.json())
 app.use(cookieParser())
-app.use("/users",router)//For Routes
+//For Routes 
+app.use("/users",router)
+app.use("/task",taskRoute)
+
 
 
 app.listen(process.env.PORT,()=>{
