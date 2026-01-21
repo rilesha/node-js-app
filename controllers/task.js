@@ -1,7 +1,8 @@
 import { Task } from "../models/task.js"
 
-export const newTask = async(req,res) =>{
-  const {title,description} = req.body
+export const newTask = async(req,res,next) =>{
+try {
+    const {title,description} = req.body
 
   await Task.create({
     title,
@@ -13,44 +14,57 @@ export const newTask = async(req,res) =>{
     success: true,
     message: "Task Added successfully",
   })
+} 
+catch (error) {
+  next(error)
+}
 }
 
-export const getMyTask = async(req,res) =>{
-    const userid = req.user._id;
-    const task = await Task.find({user: userid});
-    res.status(201).json({
-      success: true,
-      task,
-    })
+export const getMyTask = async(req,res,next) =>{
+    try {
+      const userid = req.user._id;
+      const task = await Task.find({user: userid});
+      res.status(201).json({
+        success: true,
+        task,
+      })
+    } catch (error) {
+      next(error)
+    }
   }
 
-  export const updateTask = async(req,res) =>{
+  export const updateTask = async(req,res,next) =>{
+    try {
+      const {id} = req.params;
+      const task = await Task.findById(id);
 
-    const {id} = req.params;
-    const task = await Task.findById(id);
+      if(!task) return next(new Error("Task not found"));
 
-    task.isCompleted = !task.isCompleted;//it is a checkbox so we are switching values
-    await task.save();
+      task.isCompleted = !task.isCompleted;
+      await task.save();
 
-    res.status(201).json({
-      success: true,
-      message: "Task updated sucessfully",
-    })
+      res.status(201).json({
+        success: true,
+        message: "Task updated sucessfully",
+      })
+    } catch (error) {
+      next(error)
+    }
   }
 
-  export const deleteTask = async(req,res) =>{
-     const {id} = req.params;
-    const task = await Task.findById(id);
+  export const deleteTask = async(req,res,next) =>{
+     try {
+       const {id} = req.params;
+       const task = await Task.findById(id);
 
-    if(!task) return res.status(404).json({
-      success: false,
-      message:"task doesn't exsists",
-    })
-    await task.deleteOne()
+       if(!task) return next(new Error("id not found"));
+       await task.deleteOne()
 
-
-    res.status(201).json({
-      success: true,
-      message: "Task deleted sucessfully",
-    })
+       res.status(201).json({
+         success: true,
+         message: "Task deleted sucessfully",
+       })
+     } catch (error) {
+       next(error)
+     }
   }

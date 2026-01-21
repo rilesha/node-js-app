@@ -4,6 +4,7 @@ import { connectDb } from "./data/database.js";
 import { config } from "dotenv";
 import cookieParser from "cookie-parser";
 import taskRoute from "./routes/task.js"
+import { errorHandler } from "./middleware/error.js";
 
 const app = express();
 
@@ -18,7 +19,8 @@ app.use(cookieParser())
 //For Routes 
 app.use("/users",router)
 app.use("/task",taskRoute)
-
+//Error handler
+app.use(errorHandler)
 
 
 app.listen(process.env.PORT,()=>{
