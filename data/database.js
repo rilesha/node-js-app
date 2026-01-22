@@ -7,3 +7,4 @@ export const connectDb = () =>{
 .then(()=>{ console.log("Mongoose Sucessfully connected");})
 .catch((e)=>{console.log(e)});
 } 
+//mongodb://localhost:27017
