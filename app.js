@@ -26,8 +26,12 @@ app.use(cors({
 
 
 //For Routes 
+app.get("/",(req,res)=>{
+  res.send("hi hello");
+})
 app.use("/users",router)
 app.use("/task",taskRoute)
+
 
 //Error handler
 app.use(errorHandler)
